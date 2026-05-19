@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Education Platform Indonesia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #fce4ec; color: #1a202c; }
+
+        nav { background: linear-gradient(135deg, #e91e63, #f06292); padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(233,30,99,0.3); }
+        nav .container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: auto; }
+        nav h1 { color: #fff; font-size: 1.4rem; }
+        nav ul { list-style: none; display: flex; gap: 1.5rem; }
+        nav ul li a { color: #fce4ec; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        nav ul li a:hover { color: #fff; }
+
+        .hero { background: linear-gradient(135deg, #e91e63 0%, #f06292 50%, #f8bbd0 100%); color: white; padding: 5rem 2rem; text-align: center; position: relative; overflow: hidden; }
+        .hero h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.2rem; max-width: 750px; margin: 0 auto 1.5rem; opacity: 0.95; line-height: 1.6; }
+        .hero-stats { display: flex; justify-content: center; gap: 3rem; margin-top: 2rem; flex-wrap: wrap; }
+        .hero-stat { text-align: center; }
+        .hero-stat .num { font-size: 2.2rem; font-weight: 800; }
+        .hero-stat .label { font-size: 0.9rem; opacity: 0.9; }
+
+        section { max-width: 1200px; margin: 3rem auto; padding: 0 2rem; }
+        section h2 { font-size: 2rem; margin-bottom: 1.5rem; color: #c2185b; border-left: 4px solid #f06292; padding-left: 1rem; }
+
+        /* Dashboard */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+        .card { background: white; border-radius: 16px; padding: 1.8rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.3s, box-shadow 0.3s; border-top: 4px solid #f06292; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(233,30,99,0.15); }
+        .card .icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+        .card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; color: #2d3748; }
+        .card p { font-size: 0.85rem; color: #718096; line-height: 1.5; }
+        .card .stat { font-size: 1.8rem; font-weight: 700; color: #e91e63; margin-top: 0.5rem; }
+
+        /* Features */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+        .feature-card { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .feature-card h3 { color: #c2185b; margin-bottom: 0.8rem; font-size: 1.2rem; }
+        .feature-card p { color: #4a5568; line-height: 1.7; margin-bottom: 0.8rem; }
+        .feature-card .tech-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+        .feature-card .tech-tag { background: #fce4ec; color: #e91e63; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+
+        /* How it works */
+        .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; counter-reset: step; }
+        .step { background: white; border-radius: 16px; padding: 2rem; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.08); position: relative; }
+        .step::before { counter-increment: step; content: counter(step); background: #e91e63; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; margin: 0 auto 1rem; }
+        .step h3 { color: #2d3748; margin-bottom: 0.5rem; }
+        .step p { color: #718096; font-size: 0.9rem; line-height: 1.5; }
+
+        /* Chart */
+        .chart-container { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin-top: 2rem; }
+        .bar-chart { display: flex; align-items: flex-end; gap: 1rem; height: 200px; padding-top: 1rem; }
+        .bar-wrapper { display: flex; flex-direction: column; align-items: center; flex: 1; }
+        .bar { width: 100%; border-radius: 8px 8px 0 0; transition: height 0.8s ease; min-width: 40px; }
+        .bar-label { font-size: 0.7rem; color: #718096; margin-top: 0.5rem; text-align: center; }
+        .bar-value { font-size: 0.75rem; font-weight: 700; color: #2d3748; margin-bottom: 0.3rem; }
+
+        /* News */
+        .news-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+        .news-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.3s; }
+        .news-card:hover { transform: translateY(-3px); }
+        .news-card img { width: 100%; height: 180px; object-fit: cover; }
+        .news-card .news-body { padding: 1.5rem; }
+        .news-card .news-body .tag { display: inline-block; background: #fce4ec; color: #e91e63; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .news-card .news-body h3 { font-size: 1rem; margin-bottom: 0.5rem; color: #1a202c; }
+        .news-card .news-body p { font-size: 0.85rem; color: #718096; line-height: 1.5; }
+        .news-card .news-body .date { font-size: 0.75rem; color: #a0aec0; margin-top: 0.8rem; }
+
+        /* Impact */
+        .impact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .impact-card { background: white; border-radius: 16px; padding: 1.8rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-left: 4px solid #f06292; }
+        .impact-card h3 { color: #c2185b; margin-bottom: 0.5rem; }
+        .impact-card p { color: #4a5568; line-height: 1.6; font-size: 0.9rem; }
+        .impact-card .quote { font-style: italic; color: #718096; margin-top: 0.8rem; padding-left: 1rem; border-left: 2px solid #f8bbd0; }
+
+        /* Tabs */
+        .tab-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .tab-btn { padding: 0.6rem 1.3rem; border: 2px solid #e91e63; background: transparent; color: #e91e63; border-radius: 25px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 0.9rem; }
+        .tab-btn:hover, .tab-btn.active { background: #e91e63; color: white; }
+        .tab-content { display: none; background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .tab-content.active { display: block; }
+        .tab-content h3 { color: #c2185b; margin-bottom: 1rem; }
+        .tab-content p { color: #4a5568; line-height: 1.7; margin-bottom: 0.8rem; }
+        .tab-content ul { padding-left: 1.5rem; color: #4a5568; line-height: 1.8; }
+
+        footer { background: #c2185b; color: #fce4ec; text-align: center; padding: 2rem; margin-top: 3rem; }
+        footer p { opacity: 0.9; }
+
+        @media (max-width: 768px) {
+            nav ul { gap: 0.8rem; font-size: 0.8rem; }
+            .hero h2 { font-size: 1.8rem; }
+            .hero-stats { gap: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <h1>📚 AI EduPlatform</h1>
+        <ul>
+            <li><a href="#dashboard">Dashboard</a></li>
+            <li><a href="#features">Fitur</a></li>
+            <li><a href="#how">Cara Kerja</a></li>
+            <li><a href="#news">Berita</a></li>
+            <li><a href="#impact">Dampak</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="hero">
+    <h2>AI Education Platform Indonesia</h2>
+    <p>Platform pendidikan cerdas berbasis AI yang menyesuaikan pembelajaran dengan kebutuhan setiap siswa di seluruh Indonesia — dari Sabang sampai Merauke.</p>
+    <div class="hero-stats">
+        <div class="hero-stat"><div class="num">5.7 Juta</div><div class="label">Siswa Aktif</div></div>
+        <div class="hero-stat"><div class="num">34</div><div class="label">Provinsi</div></div>
+        <div class="hero-stat"><div class="num">98.2%</div><div class="label">Akurasi Rekomendasi</div></div>
+        <div class="hero-stat"><div class="num">42%</div><div class="label">Peningkatan Nilai</div></div>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<section id="dashboard">
+    <h2>Dashboard Pendidikan AI</h2>
+    <div class="dashboard-grid">
+        <div class="card"><div class="icon">🎓</div><h3>Siswa Terdaftar</h3><p>Total pengguna platform dari SD hingga SMA</p><div class="stat">5.7 Juta</div></div>
+        <div class="card"><div class="icon">🏫</div><h3>Sekolah Mitra</h3><p>Sekolah di daerah 3T yang terintegrasi</p><div class="stat">24,350</div></div>
+        <div class="card"><div class="icon">🧠</div><h3>Model AI Aktif</h3><p>Modul adaptive learning yang berjalan</p><div class="stat">156</div></div>
+        <div class="card"><div class="icon">📖</div><h3>Konten Pembelajaran</h3><p>Materi interaktif tersedia</p><div class="stat">89,200+</div></div>
+        <div class="card"><div class="icon">👩‍🏫</div><h3>Guru Terlatih AI</h3><p>Guru yang sudah tersertifikasi AI</p><div class="stat">45,600</div></div>
+    </div>
+
+    <div class="chart-container">
+        <h3 style="margin-bottom:1rem; color:#2d3748;">Pertumbuhan Pengguna Platform (2021–2026)</h3>
+        <div class="bar-chart">
+            <div class="bar-wrapper"><div class="bar-value">0.3M</div><div class="bar" style="height:15%; background:#f8bbd0;"></div><div class="bar-label">2021</div></div>
+            <div class="bar-wrapper"><div class="bar-value">0.8M</div><div class="bar" style="height:28%; background:#f48fb1;"></div><div class="bar-label">2022</div></div>
+            <div class="bar-wrapper"><div class="bar-value">1.9M</div><div class="bar" style="height:45%; background:#f06292;"></div><div class="bar-label">2023</div></div>
+            <div class="bar-wrapper"><div class="bar-value">3.2M</div><div class="bar" style="height:63%; background:#ec407a;"></div><div class="bar-label">2024</div></div>
+            <div class="bar-wrapper"><div class="bar-value">4.5M</div><div class="bar" style="height:82%; background:#e91e63;"></div><div class="bar-label">2025</div></div>
+            <div class="bar-wrapper"><div class="bar-value">5.7M</div><div class="bar" style="height:100%; background:#c2185b;"></div><div class="bar-label">2026</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+    <h2>Fitur Unggulan Platform</h2>
+    <div class="tab-buttons">
+        <button class="tab-btn active" onclick="showTab('adaptive')">Adaptive Learning</button>
+        <button class="tab-btn" onclick="showTab('tutor')">AI Tutor</button>
+        <button class="tab-btn" onclick="showTab('assessment')">Smart Assessment</button>
+        <button class="tab-btn" onclick="showTab('bahasa')">Multi-Bahasa</button>
+        <button class="tab-btn" onclick="showTab('guru')">Dashboard Guru</button>
+    </div>
+    <div class="tab-content active" id="tab-adaptive">
+        <h3>🎯 Adaptive Learning Path</h3>
+        <p>Sistem AI menganalisis gaya belajar, kecepatan pemahaman, dan kelemahan setiap siswa untuk menyusun jalur pembelajaran yang personal. Tidak ada dua siswa yang mendapat urutan materi yang sama.</p>
+        <p><strong>Cara kerjanya:</strong></p>
+        <ul>
+            <li>AI melakukan diagnostic test awal untuk memahami level siswa</li>
+            <li>Setiap jawaban dianalisis — bukan hanya benar/salah, tapi pola kesalahan</li>
+            <li>Materi disajikan dengan tingkat kesulitan yang meningkat secara gradual</li>
+            <li>Jika siswa kesulitan, AI otomatis memberikan materi remedial yang relevan</li>
+            <li>Spaced repetition untuk memastikan retensi jangka panjang</li>
+        </ul>
+    </div>
+    <div class="tab-content" id="tab-tutor">
+        <h3>🤖 AI Tutor 24/7</h3>
+        <p>Tutor virtual berbasis NLP yang tersedia kapan saja untuk menjawab pertanyaan siswa dalam Bahasa Indonesia dan bahasa daerah. Dilengkapi kemampuan menjelaskan konsep dengan analogi yang mudah dipahami.</p>
+        <p><strong>Keunggulan:</strong></p>
+        <ul>
+            <li>Mendukung Bahasa Indonesia, Jawa, Sunda, dan 10 bahasa daerah lainnya</li>
+            <li>Menjelaskan ulang dengan cara berbeda jika siswa masih bingung</li>
+            <li>Bisa memberikan contoh soal tambahan sesuai topik yang ditanyakan</li>
+            <li>Mode suara untuk siswa yang lebih nyaman belajar secara auditori</li>
+        </ul>
+    </div>
+    <div class="tab-content" id="tab-assessment">
+        <h3>📝 Smart Assessment</h3>
+        <p>Sistem penilaian otomatis yang tidak hanya mengoreksi jawaban, tetapi juga memberikan feedback mendalam tentang proses berpikir siswa dan area yang perlu ditingkatkan.</p>
+        <ul>
+            <li>Auto-grading essay dengan NLP — memahami konteks, bukan hanya keyword</li>
+            <li>Analisis misconception untuk mendeteksi kesalahpahaman konsep</li>
+            <li>Laporan progress mingguan untuk orang tua</li>
+            <li>Prediksi performa ujian nasional berdasarkan pola belajar</li>
+        </ul>
+    </div>
+    <div class="tab-content" id="tab-bahasa">
+        <h3>🌏 Multi-Bahasa & Aksesibilitas</h3>
+        <p>Platform dirancang inklusif untuk menjangkau seluruh siswa Indonesia, termasuk di daerah 3T (Terdepan, Terluar, Tertinggal) dan siswa berkebutuhan khusus.</p>
+        <ul>
+            <li>Konten tersedia dalam 13 bahasa daerah utama Indonesia</li>
+            <li>Mode offline — materi bisa diunduh untuk belajar tanpa internet</li>
+            <li>Text-to-speech untuk siswa tunanetra</li>
+            <li>UI yang ramah low-bandwidth (kompatibel jaringan 2G/3G)</li>
+        </ul>
+    </div>
+    <div class="tab-content" id="tab-guru">
+        <h3>👩‍🏫 Dashboard Guru & Analytics</h3>
+        <p>Guru mendapat insight berbasis data tentang performa kelas, membantu mereka fokus pada siswa yang paling membutuhkan perhatian ekstra.</p>
+        <ul>
+            <li>Heatmap pemahaman kelas — topik mana yang paling banyak siswa kesulitan</li>
+            <li>Alert otomatis jika ada siswa yang menunjukkan penurunan drastis</li>
+            <li>Rekomendasi strategi mengajar berdasarkan data kelas</li>
+            <li>Bank soal AI-generated yang disesuaikan kebutuhan kelas</li>
+        </ul>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+    <h2>Cara Kerja Platform</h2>
+    <div class="steps">
+        <div class="step"><h3>Registrasi & Diagnostic</h3><p>Siswa mendaftar dan mengikuti tes diagnostik awal untuk memetakan kemampuan di setiap mata pelajaran.</p></div>
+        <div class="step"><h3>AI Analisis Profil</h3><p>Machine learning menganalisis gaya belajar, kecepatan, dan area yang perlu diperkuat untuk membuat learning path personal.</p></div>
+        <div class="step"><h3>Belajar Adaptif</h3><p>Siswa belajar dengan materi yang disesuaikan level-nya. AI terus menyesuaikan berdasarkan progress real-time.</p></div>
+        <div class="step"><h3>Evaluasi & Feedback</h3><p>Setiap kuis dan tugas dinilai AI secara instan dengan feedback mendalam untuk perbaikan berkelanjutan.</p></div>
+    </div>
+</section>
+
+<!-- NEWS -->
+<section id="news">
+    <h2>Berita Terkini AI Pendidikan</h2>
+    <div class="news-container">
+        <div class="news-card"><img src="https://placehold.co/400x200/e91e63/fff?text=AI+Adaptive+Learning" alt="News"><div class="news-body"><span class="tag">Inovasi</span><h3>Platform AI Adaptif Berhasil Naikkan Nilai UN Siswa Papua 35%</h3><p>Uji coba selama 2 tahun menunjukkan peningkatan signifikan pada kemampuan matematika dan literasi siswa di daerah terpencil.</p><div class="date">12 Mei 2026</div></div></div>
+        <div class="news-card"><img src="https://placehold.co/400x200/f06292/fff?text=AI+Tutor+Bahasa" alt="News"><div class="news-body"><span class="tag">Bahasa Daerah</span><h3>AI Tutor Kini Bisa Mengajar dalam Bahasa Bugis dan Dayak</h3><p>Pengembangan NLP untuk bahasa daerah memungkinkan 800rb siswa belajar dengan bahasa ibu mereka.</p><div class="date">9 Mei 2026</div></div></div>
+        <div class="news-card"><img src="https://placehold.co/400x200/c2185b/fff?text=Guru+AI+Training" alt="News"><div class="news-body"><span class="tag">Pelatihan</span><h3>Kemendikbud Latih 10.000 Guru Gunakan AI dalam Pembelajaran</h3><p>Program sertifikasi guru digital diperluas ke seluruh Indonesia dengan target 50.000 guru pada akhir 2026.</p><div class="date">6 Mei 2026</div></div></div>
+        <div class="news-card"><img src="https://placehold.co/400x200/ad1457/fff?text=Offline+Mode" alt="News"><div class="news-body"><span class="tag">Aksesibilitas</span><h3>Mode Offline AI Education Jangkau 5.000 Sekolah Tanpa Internet</h3><p>Dengan edge computing dan model AI ringan, siswa di daerah tanpa sinyal kini bisa tetap belajar adaptif.</p><div class="date">2 Mei 2026</div></div></div>
+        <div class="news-card"><img src="https://placehold.co/400x200/d81b60/fff?text=Student+Achievement" alt="News"><div class="news-body"><span class="tag">Prestasi</span><h3>Siswa Pengguna Platform Raih Emas di Olimpiade Matematika Asia</h3><p>3 dari 5 siswa perwakilan Indonesia yang meraih medali emas adalah pengguna aktif AI Education Platform.</p><div class="date">28 Apr 2026</div></div></div>
+        <div class="news-card"><img src="https://placehold.co/400x200/f48fb1/fff?text=Research+Impact" alt="News"><div class="news-body"><span class="tag">Riset</span><h3>Studi ITB: AI Personalization Kurangi Dropout Rate 28%</h3><p>Penelitian longitudinal selama 3 tahun membuktikan siswa dengan pembelajaran personal AI lebih bertahan di sekolah.</p><div class="date">24 Apr 2026</div></div></div>
+    </div>
+</section>
+
+<!-- IMPACT -->
+<section id="impact">
+    <h2>Dampak Nyata di Lapangan</h2>
+    <div class="impact-grid">
+        <div class="impact-card"><h3>🏝️ NTT & Papua</h3><p>12.000 siswa di daerah 3T mendapat akses pendidikan berkualitas setara kota besar untuk pertama kalinya.</p><div class="quote">"Anak saya sekarang bisa belajar matematika yang sama dengan anak di Jakarta." — Ibu Maria, NTT</div></div>
+        <div class="impact-card"><h3>♿ Inklusi Disabilitas</h3><p>Platform mendukung 3.400 siswa tunanetra dan tunarungu dengan fitur text-to-speech dan visual learning.</p><div class="quote">"AI tutor menjelaskan dengan sabar, tidak pernah capek diulang." — Rina, siswa tunanetra di Yogyakarta</div></div>
+        <div class="impact-card"><h3>📈 Peningkatan Akademik</h3><p>Rata-rata peningkatan nilai ujian 42% setelah 6 bulan penggunaan aktif platform di seluruh Indonesia.</p><div class="quote">"Matematika yang tadinya menakutkan jadi seru karena soalnya pas sama level saya." — Adi, SMP di Kalimantan</div></div>
+        <div class="impact-card"><h3>👩‍🏫 Empowerment Guru</h3><p>Guru menghemat rata-rata 8 jam/minggu dari grading manual, dialihkan untuk mentoring personal siswa.</p><div class="quote">"Sekarang saya punya waktu lebih untuk benar-benar mengenal dan membimbing murid." — Bu Sari, guru SD di Sulawesi</div></div>
+    </div>
+</section>
+
+<!-- SDGs -->
+<section>
+    <h2>Kontribusi pada SDGs</h2>
+    <div class="features-grid">
+        <div class="feature-card"><h3>SDG 4 — Quality Education</h3><p>Menyediakan pendidikan berkualitas dan inklusif untuk semua anak Indonesia tanpa memandang lokasi, ekonomi, atau kondisi fisik. AI memastikan setiap anak belajar sesuai potensinya.</p><div class="tech-tags"><span class="tech-tag">Adaptive Learning</span><span class="tech-tag">Personalization</span><span class="tech-tag">Accessibility</span></div></div>
+        <div class="feature-card"><h3>SDG 10 — Reduced Inequalities</h3><p>Mengurangi kesenjangan pendidikan antara kota dan desa. Siswa di pelosok mendapat kualitas pembelajaran yang sama dengan siswa di kota besar.</p><div class="tech-tags"><span class="tech-tag">Offline Mode</span><span class="tech-tag">Bahasa Daerah</span><span class="tech-tag">Low-Bandwidth</span></div></div>
+        <div class="feature-card"><h3>SDG 9 — Innovation & Infrastructure</h3><p>Memanfaatkan infrastruktur teknologi AI mutakhir untuk membangun sistem pendidikan yang scalable dan berkelanjutan di seluruh nusantara.</p><div class="tech-tags"><span class="tech-tag">Edge Computing</span><span class="tech-tag">NLP</span><span class="tech-tag">Machine Learning</span></div></div>
+    </div>
+</section>
+
+<footer>
+    <p>© Tugas ApTek | 2026 AI for SDGs Indonesia</p>
+    <p style="margin-top:0.5rem; font-size:0.85rem;">Regita Cahyani Priyantoko - 5015231021</p>
+</footer>
+
+<script>
+function showTab(id) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
